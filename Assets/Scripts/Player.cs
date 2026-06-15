@@ -24,6 +24,20 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 
     [SerializeField] private IntegrityBar integrityBar;
 
+    [Header("Efectos de daño")]
+    [SerializeField] private float flashDuration = 0.08f;
+    [SerializeField] private float blinkInterval = 0.1f;
+    [SerializeField] private float blinkDuration = 0.4f;
+    [SerializeField] private float blinkOpacity = 0.75f;
+
+    [Header("Regeneración")]
+    [SerializeField] private float regenDelay = 5f;
+    [SerializeField] private float regenPerSecond = 5f;
+    [SerializeField] private float regenMaxIntegrity = 75f;
+
+    private float lastDamageTime = -999f;
+    private bool isBlinking = false;
+
     [Header("Power-ups")]
     private bool isInvisible = false;
     public bool IsInvisible => isInvisible;
@@ -43,10 +57,11 @@ public class Player : MonoBehaviour, IDamageable, IMovable
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         moveInput = new Vector2(x, y).normalized;
-
         isMoving = moveInput != Vector2.zero;
 
         HandleSpriteRotation();
+
+        HandleRegeneration();
     }
 
     private void FixedUpdate()
@@ -82,9 +97,18 @@ public class Player : MonoBehaviour, IDamageable, IMovable
     public void TakeDamage(float amount)
     {
         if (isInvisible) return;
+
         currentIntegrity -= amount;
         currentIntegrity = Mathf.Clamp(currentIntegrity, 0f, maxIntegrity);
+        lastDamageTime = Time.time;
+
         integrityBar.UpdateBar(currentIntegrity, maxIntegrity);
+
+        // Efectos visuales
+        CameraShake.Instance?.ShakeOnDamage();
+        StartCoroutine(FlashRed());
+        if (!isBlinking) StartCoroutine(BlinkRoutine());
+
         if (currentIntegrity <= 0f) Die();
     }
 
@@ -124,5 +148,46 @@ public class Player : MonoBehaviour, IDamageable, IMovable
         c.a = 1f;
         spriteRenderer.color = c;
         GameManager.Instance.HidePowerUpUI();
+    }
+
+    private void HandleRegeneration()
+    {
+        if (currentIntegrity <= 0f) return;
+        if (currentIntegrity >= regenMaxIntegrity) return;
+        if (currentIntegrity > maxIntegrity * 0.3f) return; // solo bajo el 30%
+
+        if (Time.time - lastDamageTime >= regenDelay)
+        {
+            currentIntegrity += regenPerSecond * Time.deltaTime;
+            currentIntegrity = Mathf.Min(currentIntegrity, regenMaxIntegrity);
+            integrityBar.UpdateBar(currentIntegrity, maxIntegrity);
+        }
+    }
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
+        yield return new WaitForSeconds(flashDuration);
+        if (!isBlinking)
+            spriteRenderer.color = Color.white;
+    }
+
+    private IEnumerator BlinkRoutine()
+    {
+        isBlinking = true;
+        float elapsed = 0f;
+
+        while (elapsed < blinkDuration)
+        {
+            elapsed += Time.deltaTime;
+            // Alternar entre opacidad completa y reducida
+            float alpha = Mathf.PingPong(elapsed / blinkInterval, 1f) > 0.5f
+                ? 1f : blinkOpacity;
+            spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
+            yield return null;
+        }
+
+        spriteRenderer.color = Color.white;
+        isBlinking = false;
     }
 }

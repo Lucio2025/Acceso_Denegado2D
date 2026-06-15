@@ -10,7 +10,6 @@ public class Button : MonoBehaviour, IInteractable
     private bool isPressed = false;
     private SpriteRenderer spriteRenderer;
 
-    // Evento: otros objetos pueden suscribirse para saber cuando se activa
     public event System.Action OnPressed;
 
     private void Awake()
@@ -19,7 +18,6 @@ public class Button : MonoBehaviour, IInteractable
         spriteRenderer.sprite = idleSprite;
     }
 
-    // Se llama cuando el jugador pisa el botón (via trigger)
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !isPressed)
@@ -33,7 +31,8 @@ public class Button : MonoBehaviour, IInteractable
     {
         isPressed = true;
         spriteRenderer.sprite = pressedSprite;
-        OnPressed?.Invoke(); // Avisa a quien esté escuchando
+        CameraShake.Instance?.ShakeOnButton();
+        OnPressed?.Invoke();
         Debug.Log($"{gameObject.name} activado!");
     }
 
