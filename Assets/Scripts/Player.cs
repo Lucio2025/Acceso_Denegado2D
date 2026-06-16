@@ -128,26 +128,34 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 
     public IEnumerator SpeedBoostRoutine(float duration, float multiplier)
     {
-        speed = baseSpeed * multiplier;
-        GameManager.Instance.ShowPowerUpUI("@Override", duration);
+        float originalSpeed = speed;
+        speed = originalSpeed * multiplier;
+
+        // Tinte azulado para indicar velocidad
+        spriteRenderer.color = new Color(0.4f, 0.7f, 1f, 1f);
+
+        HUDManager.Instance?.ShowPowerUp("@Override", duration);
+
         yield return new WaitForSeconds(duration);
-        speed = baseSpeed;
-        GameManager.Instance.HidePowerUpUI();
+
+        speed = originalSpeed;
+        spriteRenderer.color = Color.white;
+        HUDManager.Instance?.HidePowerUp();
     }
     public IEnumerator InvisibilityRoutine(float duration)
     {
         isInvisible = true;
-        Color c = spriteRenderer.color;
-        c.a = 0.4f;
-        spriteRenderer.color = c;
 
-        GameManager.Instance.ShowPowerUpUI("// comentario", duration);
+        // Color verdoso semitransparente
+        spriteRenderer.color = new Color(0.4f, 1f, 0.4f, 0.5f);
+
+        HUDManager.Instance?.ShowPowerUp("// comentario", duration);
+
         yield return new WaitForSeconds(duration);
 
         isInvisible = false;
-        c.a = 1f;
-        spriteRenderer.color = c;
-        GameManager.Instance.HidePowerUpUI();
+        spriteRenderer.color = Color.white;
+        HUDManager.Instance?.HidePowerUp();
     }
 
     private void HandleRegeneration()
