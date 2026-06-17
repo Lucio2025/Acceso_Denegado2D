@@ -87,4 +87,13 @@ public class GameManager : MonoBehaviour
     {
         hudManager?.HidePowerUp();
     }
+
+    public void OnPlayerWon()
+    {
+        // Mostrar pantalla de victoria
+        Time.timeScale = 0f;
+        // Si tenés un panel de victoria:
+        // victoryPanel?.SetActive(true);
+        Debug.Log("¡Victoria!");
+    }
 }

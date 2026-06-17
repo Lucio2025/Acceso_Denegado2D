@@ -5,6 +5,7 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 {
     [Header("Movimiento")]
     [SerializeField] private float speed = 5f;
+    private float baseSpeed;
 
     [Header("Rotacion de sprites")]
     [SerializeField] private Sprite[] rotationCycle;
@@ -41,8 +42,6 @@ public class Player : MonoBehaviour, IDamageable, IMovable
     [Header("Power-ups")]
     private bool isInvisible = false;
     public bool IsInvisible => isInvisible;
-
-    private float baseSpeed;
 
     private void Awake()
     {
@@ -120,6 +119,9 @@ public class Player : MonoBehaviour, IDamageable, IMovable
     public void Respawn()
     {
         currentIntegrity = maxIntegrity;
+        speed = baseSpeed; // ← agregar esto
+        spriteRenderer.color = Color.white;
+        isInvisible = false;
         integrityBar.UpdateBar(currentIntegrity, maxIntegrity);
     }
 
@@ -128,17 +130,20 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 
     public IEnumerator SpeedBoostRoutine(float duration, float multiplier)
     {
+        // Guardar velocidad original ANTES de modificar
         float originalSpeed = speed;
         speed = originalSpeed * multiplier;
 
-        // Tinte azulado para indicar velocidad
         spriteRenderer.color = new Color(0.4f, 0.7f, 1f, 1f);
-
         HUDManager.Instance?.ShowPowerUp("@Override", duration);
 
         yield return new WaitForSeconds(duration);
 
-        speed = originalSpeed;
+        // Restaurar solo si la velocidad actual sigue siendo la modificada
+        // (evita restaurar si ya hubo otro powerup encima)
+        if (Mathf.Approximately(speed, originalSpeed * multiplier))
+            speed = originalSpeed;
+
         spriteRenderer.color = Color.white;
         HUDManager.Instance?.HidePowerUp();
     }
