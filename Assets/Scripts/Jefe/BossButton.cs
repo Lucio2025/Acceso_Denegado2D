@@ -18,6 +18,8 @@ public class BossButton : MonoBehaviour
     private bool isPressed = false;
     private Coroutine activeCoroutine;
 
+    public float GetActiveWindow() => activeWindow;
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
