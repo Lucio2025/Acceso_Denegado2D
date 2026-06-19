@@ -130,21 +130,18 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 
     public IEnumerator SpeedBoostRoutine(float duration, float multiplier)
     {
-        // Guardar velocidad original ANTES de modificar
-        float originalSpeed = speed;
-        speed = originalSpeed * multiplier;
+        speed = baseSpeed * multiplier;
 
         spriteRenderer.color = new Color(0.4f, 0.7f, 1f, 1f);
         HUDManager.Instance?.ShowPowerUp("@Override", duration);
 
         yield return new WaitForSeconds(duration);
 
-        // Restaurar solo si la velocidad actual sigue siendo la modificada
-        // (evita restaurar si ya hubo otro powerup encima)
-        if (Mathf.Approximately(speed, originalSpeed * multiplier))
-            speed = originalSpeed;
+        speed = baseSpeed; // siempre restaurar a la base, sin condiciones
 
-        spriteRenderer.color = Color.white;
+        if (!isInvisible)
+            spriteRenderer.color = Color.white;
+
         HUDManager.Instance?.HidePowerUp();
     }
     public IEnumerator InvisibilityRoutine(float duration)

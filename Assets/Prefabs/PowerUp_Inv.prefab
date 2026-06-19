@@ -166,5 +166,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 551a859f11f4de54f92324b3e1bebaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Invisibility
-  duration: 5
+  duration: 9
   collectFX: {fileID: 0}

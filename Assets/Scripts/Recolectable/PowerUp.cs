@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class PowerUp : MonoBehaviour, ICollectible
 {
     [SerializeField] protected float duration = 5f;
-
     [SerializeField] protected GameObject collectFX;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -15,12 +14,12 @@ public abstract class PowerUp : MonoBehaviour, ICollectible
     public void OnCollect()
     {
         Player player = FindFirstObjectByType<Player>();
-        if (player != null) ApplyEffect(player);
 
         if (collectFX != null)
             Instantiate(collectFX, transform.position, Quaternion.identity);
-        //Player player = FindFirstObjectByType<Player>();
-        if (player != null) ApplyEffect(player);
+
+        if (player != null)
+            ApplyEffect(player); // ← solo UNA vez
 
         Destroy(gameObject);
     }
