@@ -40,6 +40,12 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(
             CameraController.Instance.GetFadeController().FadeOut());
 
+        // Resetear el jefe si existe
+        TheCompiler compiler = FindFirstObjectByType<TheCompiler>();
+        if (compiler != null)
+            compiler.ResetBoss();
+
+        // Teleport al último checkpoint
         player.transform.position = lastCheckpointPosition;
         CameraController.Instance.transform.position = new Vector3(
             lastCameraPosition.x, lastCameraPosition.y,

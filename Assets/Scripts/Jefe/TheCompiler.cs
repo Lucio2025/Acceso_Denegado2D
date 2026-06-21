@@ -29,6 +29,9 @@ public class TheCompiler : MonoBehaviour, IDamageable
     [Header("Salida")]
     [SerializeField] private GameObject exitBarrier;
 
+    [Header("Trigger de sala")]
+    [SerializeField] private BossRoomTrigger bossRoomTrigger;
+
     private SpriteRenderer sr;
     private bool isDead = false;
     private int buttonsPressed = 0;
@@ -266,4 +269,28 @@ public class TheCompiler : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(0.2f);
         sr.color = Color.white;
     }
+
+    public void ResetBoss()
+    {
+        if (!isDead) StopAllCoroutines();
+
+        isDead = false;
+        currentPhase = 0;
+        currentHealth = maxHealth;
+        buttonsPressed = 0;
+
+        foreach (var btn in bossButtons)
+            if (btn != null) btn.ResetButton();
+
+        SetCamerasActive(false);
+        BossHealthBar.Instance?.Hide();
+
+        if (entranceBarrier != null)
+            entranceBarrier.SetActive(false);
+
+        // Reactivar el trigger para que pueda detectar al jugador de nuevo
+        if (bossRoomTrigger != null)
+            bossRoomTrigger.Reset();
+    }
+
 }

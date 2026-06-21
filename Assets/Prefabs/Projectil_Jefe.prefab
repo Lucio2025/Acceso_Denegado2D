@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 9191946595852234878}
   - component: {fileID: 7708953340798686319}
   - component: {fileID: 4748233081273279830}
-  - component: {fileID: 4566749095998005044}
   - component: {fileID: 335146491798769634}
+  - component: {fileID: -6417252690620170231}
+  - component: {fileID: 5646282500992446012}
   m_Layer: 9
   m_Name: Projectil_Jefe
   m_TagString: Untagged
@@ -84,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 18ee0558eddb25645b8b24b038d35987, type: 3}
+  m_Sprite: {fileID: -2755093724720185039, guid: 2861f985e4f042c49bbe0731df601ab3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -121,8 +122,44 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &4566749095998005044
-CircleCollider2D:
+--- !u!114 &335146491798769634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4958134049602807045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8054a260cd60664b8b8e7309b18236e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CompilerProjectile
+  damage: 25
+  lifetime: 4
+--- !u!95 &-6417252690620170231
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4958134049602807045}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2d381ada3be6429408e03c9bfb979168, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &5646282500992446012
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -155,19 +192,15 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.66
---- !u!114 &335146491798769634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4958134049602807045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8054a260cd60664b8b8e7309b18236e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CompilerProjectile
-  damage: 25
-  lifetime: 4
+  m_Offset: {x: 0.008737564, y: -0.14853287}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3, y: 2}
+    newSize: {x: 1.46875, y: 1.125}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.7262325, y: 1.400032}
+  m_EdgeRadius: 0

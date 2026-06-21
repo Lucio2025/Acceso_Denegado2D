@@ -61,4 +61,14 @@ public class BossButton : MonoBehaviour
     }
 
     public bool IsPressed() => isPressed;
+
+    public void ResetButton()
+    {
+        isPressed = false;
+        isActive = false;
+        if (activeCoroutine != null) StopCoroutine(activeCoroutine);
+        activeCoroutine = null;
+        if (sr != null && idleSprite != null)
+            sr.sprite = idleSprite;
+    }
 }
