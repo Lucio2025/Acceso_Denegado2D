@@ -11,7 +11,6 @@ public class FadeController : MonoBehaviour
 
     private void Awake()
     {
-        // Empezar transparente
         Color c = fadeImage.color;
         c.a = 0f;
         fadeImage.color = c;

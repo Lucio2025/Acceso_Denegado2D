@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        player = FindFirstObjectByType<Player>();
+        player = FindAnyObjectByType<Player>();
     }
 
     // ── Checkpoint ─────────────────────────────────────────
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(
             CameraController.Instance.GetFadeController().FadeOut());
 
-        TheCompiler compiler = FindFirstObjectByType<TheCompiler>();
+        TheCompiler compiler = FindAnyObjectByType<TheCompiler>();
         if (compiler != null)
             compiler.ResetBoss();
 

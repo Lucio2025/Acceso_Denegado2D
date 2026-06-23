@@ -49,18 +49,15 @@ public class SecurityCamera : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Buscar MeshFilter y MeshRenderer en el hijo ConeVisual
         Transform coneVisual = transform.Find("ConeVisual");
         if (coneVisual == null)
         {
-            Debug.LogError("Falta el hijo 'ConeVisual' en " + gameObject.name);
             return;
         }
 
         meshFilter = coneVisual.GetComponent<MeshFilter>();
         meshRenderer = coneVisual.GetComponent<MeshRenderer>();
 
-        // Material simple de color
         meshRenderer.material = new Material(Shader.Find("Sprites/Default"));
         meshRenderer.sortingLayerName = spriteRenderer.sortingLayerName;
         meshRenderer.sortingOrder = spriteRenderer.sortingOrder - 1;

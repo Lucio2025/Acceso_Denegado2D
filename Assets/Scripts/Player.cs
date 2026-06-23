@@ -103,7 +103,6 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 
         integrityBar.UpdateBar(currentIntegrity, maxIntegrity);
 
-        // Efectos visuales
         CameraShake.Instance?.ShakeOnDamage();
         StartCoroutine(FlashRed());
         if (!isBlinking) StartCoroutine(BlinkRoutine());
@@ -119,7 +118,7 @@ public class Player : MonoBehaviour, IDamageable, IMovable
     public void Respawn()
     {
         currentIntegrity = maxIntegrity;
-        speed = baseSpeed; // ← agregar esto
+        speed = baseSpeed;
         spriteRenderer.color = Color.white;
         isInvisible = false;
         integrityBar.UpdateBar(currentIntegrity, maxIntegrity);
@@ -137,7 +136,7 @@ public class Player : MonoBehaviour, IDamageable, IMovable
 
         yield return new WaitForSeconds(duration);
 
-        speed = baseSpeed; // siempre restaurar a la base, sin condiciones
+        speed = baseSpeed;
 
         if (!isInvisible)
             spriteRenderer.color = Color.white;
@@ -148,7 +147,6 @@ public class Player : MonoBehaviour, IDamageable, IMovable
     {
         isInvisible = true;
 
-        // Color verdoso semitransparente
         spriteRenderer.color = new Color(0.4f, 1f, 0.4f, 0.5f);
 
         HUDManager.Instance?.ShowPowerUp("// comentario", duration);
@@ -164,7 +162,7 @@ public class Player : MonoBehaviour, IDamageable, IMovable
     {
         if (currentIntegrity <= 0f) return;
         if (currentIntegrity >= regenMaxIntegrity) return;
-        if (currentIntegrity > maxIntegrity * 0.3f) return; // solo bajo el 30%
+        if (currentIntegrity > maxIntegrity * 0.3f) return;
 
         if (Time.time - lastDamageTime >= regenDelay)
         {
@@ -190,7 +188,6 @@ public class Player : MonoBehaviour, IDamageable, IMovable
         while (elapsed < blinkDuration)
         {
             elapsed += Time.deltaTime;
-            // Alternar entre opacidad completa y reducida
             float alpha = Mathf.PingPong(elapsed / blinkInterval, 1f) > 0.5f
                 ? 1f : blinkOpacity;
             spriteRenderer.color = new Color(1f, 1f, 1f, alpha);

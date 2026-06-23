@@ -30,7 +30,6 @@ public class CameraController : MonoBehaviour
 
         if (currentMode == CameraZone.FollowMode.FollowX)
         {
-            // Seguir al jugador en X, clampear dentro del collider
             float minX = currentZone.bounds.min.x;
             float maxX = currentZone.bounds.max.x;
             float clampedX = Mathf.Clamp(playerTransform.position.x, minX, maxX);

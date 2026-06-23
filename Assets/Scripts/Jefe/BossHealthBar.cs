@@ -8,13 +8,13 @@ public class BossHealthBar : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private GameObject panel;
-    [SerializeField] private Image barraVida;      // roja, baja al instante
-    [SerializeField] private Image barraGhost;     // blanca, baja con delay
+    [SerializeField] private Image barraVida;
+    [SerializeField] private Image barraGhost;
     [SerializeField] private CanvasGroup canvasGroup;
 
     [Header("Ghost bar")]
-    [SerializeField] private float ghostDelay = 0.6f;    // segundos antes de empezar a bajar
-    [SerializeField] private float ghostSpeed = 0.4f;    // qué tan rápido baja
+    [SerializeField] private float ghostDelay = 0.6f;
+    [SerializeField] private float ghostSpeed = 0.4f;
 
     [Header("Fade de entrada")]
     [SerializeField] private float fadeDuration = 1.5f;
@@ -36,13 +36,11 @@ public class BossHealthBar : MonoBehaviour
 
     private void Update()
     {
-        // Ghost bar baja suavemente hacia el target
         if (barraGhost != null)
             barraGhost.fillAmount = Mathf.MoveTowards(
                 barraGhost.fillAmount, targetGhost, ghostSpeed * Time.deltaTime);
     }
 
-    // Llamado por TheCompiler al iniciar la batalla
     public void Show()
     {
         panel.SetActive(true);
@@ -59,10 +57,8 @@ public class BossHealthBar : MonoBehaviour
 
     public void UpdateHealth(float ratio)
     {
-        // Barra roja baja al instante
         barraVida.fillAmount = ratio;
 
-        // Ghost bar baja después de un delay
         if (ghostCoroutine != null) StopCoroutine(ghostCoroutine);
         ghostCoroutine = StartCoroutine(GhostDelay(ratio));
     }

@@ -13,8 +13,6 @@ public class IntegrityBar : MonoBehaviour
     [SerializeField] private float waveSpeed = 1.2f;
     [SerializeField] private float waveMinAlpha = 0.3f;
 
-    private bool canRegen = false;
-
     private float currentRatio = 1f;
 
     public void UpdateBar(float current, float max)
@@ -38,11 +36,8 @@ public class IntegrityBar : MonoBehaviour
             return;
         }
 
-        // Alpha base según cuánta integridad falta
-        // 50% → alpha 0, 0% → alpha 1
         float baseAlpha = Mathf.InverseLerp(corruptionThreshold, 0f, currentRatio);
 
-        // Efecto de ola sobre el alpha base
         float wave = (Mathf.Sin(Time.time * waveSpeed) + 1f) * 0.5f; // 0 a 1
         float finalAlpha = Mathf.Lerp(baseAlpha * waveMinAlpha, baseAlpha, wave);
 

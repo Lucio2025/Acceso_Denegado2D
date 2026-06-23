@@ -22,7 +22,6 @@ public class FirewallGuard : MonoBehaviour, IMovable
 
     private void Start()
     {
-        // Empieza yendo hacia B
         currentTarget = pointB;
     }
 
@@ -36,19 +35,16 @@ public class FirewallGuard : MonoBehaviour, IMovable
     {
         if (pointA == null || pointB == null) return;
 
-        // Mover hacia el objetivo
         transform.position = Vector2.MoveTowards(
             transform.position,
             currentTarget.position,
             speed * Time.deltaTime
         );
 
-        // Voltear sprite según dirección horizontal
         float dirX = currentTarget.position.x - transform.position.x;
         if (Mathf.Abs(dirX) > 0.01f)
             spriteRenderer.flipX = dirX < 0;
 
-        // Cambiar objetivo al llegar
         if (Vector2.Distance(transform.position, currentTarget.position) < 0.05f)
             currentTarget = currentTarget == pointB ? pointA : pointB;
     }
@@ -56,7 +52,7 @@ public class FirewallGuard : MonoBehaviour, IMovable
     // IMovable
     public void Move(Vector2 direction)
     {
-        // La patrulla la maneja Patrol(), este método queda para cumplir la interfaz
+        // La patrulla la maneja Patrol()
     }
 
     private void OnTriggerEnter2D(Collider2D other)

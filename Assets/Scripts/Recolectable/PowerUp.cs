@@ -13,13 +13,13 @@ public abstract class PowerUp : MonoBehaviour, ICollectible
 
     public void OnCollect()
     {
-        Player player = FindFirstObjectByType<Player>();
+        Player player = FindAnyObjectByType<Player>();
 
         if (collectFX != null)
             Instantiate(collectFX, transform.position, Quaternion.identity);
 
         if (player != null)
-            ApplyEffect(player); // ← solo UNA vez
+            ApplyEffect(player);
 
         Destroy(gameObject);
     }

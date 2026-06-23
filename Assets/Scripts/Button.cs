@@ -26,7 +26,6 @@ public class Button : MonoBehaviour, IInteractable
         }
     }
 
-    // IInteractable
     public void Interact()
     {
         isPressed = true;

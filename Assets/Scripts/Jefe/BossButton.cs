@@ -4,9 +4,9 @@ using System.Collections;
 public class BossButton : MonoBehaviour
 {
     [Header("Sprites")]
-    [SerializeField] private Sprite idleSprite;    // apagado
-    [SerializeField] private Sprite activeSprite;  // encendido, pisable
-    [SerializeField] private Sprite pressedSprite; // pisado
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite pressedSprite;
 
     [Header("Tiempo activo")]
     [SerializeField] private float activeWindow = 8f;
@@ -26,7 +26,6 @@ public class BossButton : MonoBehaviour
         sr.sprite = idleSprite;
     }
 
-    // El jefe llama esto para encender el botón
     public void Activate()
     {
         if (isPressed) return;
@@ -41,7 +40,6 @@ public class BossButton : MonoBehaviour
 
         yield return new WaitForSeconds(activeWindow);
 
-        // Se apagó sin que lo pisaran
         isActive = false;
         sr.sprite = idleSprite;
         activeCoroutine = null;

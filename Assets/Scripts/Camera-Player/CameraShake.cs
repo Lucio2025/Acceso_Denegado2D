@@ -31,7 +31,6 @@ public class CameraShake : MonoBehaviour
 
     private IEnumerator ShakeRoutine(float duration, float magnitude)
     {
-        // Guardar posición ACTUAL justo antes de temblar
         Vector3 posicionAntesDeTemblar = transform.position;
 
         float elapsed = 0f;
@@ -44,7 +43,6 @@ public class CameraShake : MonoBehaviour
             yield return null;
         }
 
-        // Restaurar la posición que tenía antes del temblor
         transform.position = posicionAntesDeTemblar;
         shakeCoroutine = null;
     }

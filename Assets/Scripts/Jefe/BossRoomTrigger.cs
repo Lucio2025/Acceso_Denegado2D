@@ -25,9 +25,6 @@ public class BossRoomTrigger : MonoBehaviour
 
         if (boss != null)
             boss.StartBattle();
-
-        // No desactivamos el objeto, solo marcamos como triggered
-        // así Reset() puede volver a habilitarlo
     }
 
     public void Reset()

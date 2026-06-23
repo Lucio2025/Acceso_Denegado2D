@@ -10,15 +10,15 @@ public class TheCompiler : MonoBehaviour, IDamageable
 
     [Header("Proyectiles")]
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private GameObject warningPrefab; // línea punteada
-    [SerializeField] private Transform[] firePoints;   // puntos de disparo
+    [SerializeField] private GameObject warningPrefab;
+    [SerializeField] private Transform[] firePoints;
     [SerializeField] private float warningDuration = 1.5f;
 
     [Header("Cadencia por fase")]
     [SerializeField] private float[] fireCooldowns = { 2.5f, 1.8f, 1.2f };
 
     [Header("Botones de la sala")]
-    [SerializeField] private BossButton[] bossButtons; // 3 botones
+    [SerializeField] private BossButton[] bossButtons;
 
     [Header("Cámaras de la sala")]
     [SerializeField] private SecurityCamera[] roomCameras;
@@ -45,17 +45,15 @@ public class TheCompiler : MonoBehaviour, IDamageable
     public void StartBattle()
     {
         currentHealth = maxHealth;
-        BossHealthBar.Instance?.Show(); // ← agregar
+        BossHealthBar.Instance?.Show();
 
         UpdateHealthBar();
 
-        // Desactivar cámaras al inicio
         SetCamerasActive(false);
 
-        // Suscribir botones
         for (int i = 0; i < bossButtons.Length; i++)
         {
-            int index = i; // capturar para el closure
+            int index = i;
             bossButtons[i].OnButtonPressed += () => OnBossButtonPressed(index);
         }
 
@@ -69,7 +67,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(2f);
         CameraShake.Instance?.Shake(0.3f, 0.1f);
 
-        // Activar botón de la fase actual después de X segundos
         StartCoroutine(ActivateCurrentPhaseButton());
 
         while (!isDead)
@@ -80,10 +77,7 @@ public class TheCompiler : MonoBehaviour, IDamageable
 
     private IEnumerator AttackCycle()
     {
-        // Advertencia visual antes de disparar
         yield return StartCoroutine(ShowWarning());
-
-        // Disparar
         Shoot();
 
         float cooldown = fireCooldowns[Mathf.Min(currentPhase, fireCooldowns.Length - 1)];
@@ -100,9 +94,8 @@ public class TheCompiler : MonoBehaviour, IDamageable
             yield break;
         }
 
-        // Elegir FirePoint aleatorio
         Transform firePoint = firePoints[Random.Range(0, firePoints.Length)];
-        lastFirePoint = firePoint; // guardar para usarlo en Shoot()
+        lastFirePoint = firePoint;
 
         GameObject warning = Instantiate(warningPrefab, firePoint.position,
             firePoint.rotation);
@@ -140,7 +133,7 @@ public class TheCompiler : MonoBehaviour, IDamageable
 
     private void OnBossButtonPressed(int buttonIndex)
     {
-        if (buttonIndex != currentPhase) return; // solo el botón de la fase actual cuenta
+        if (buttonIndex != currentPhase) return;
 
         buttonsPressed++;
         AdvancePhase();
@@ -149,7 +142,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
     private void AdvancePhase()
     {
         currentPhase++;
-        // Vida baja en tercios exactos
         currentHealth = maxHealth * (1f - currentPhase / 3f);
 
         CameraShake.Instance?.Shake(0.4f, 0.15f);
@@ -158,19 +150,15 @@ public class TheCompiler : MonoBehaviour, IDamageable
 
         if (currentPhase == 1)
         {
-            // Fase 2: encender una cámara
             if (roomCameras.Length > 0)
                 roomCameras[0].gameObject.SetActive(true);
 
-            // Activar el siguiente botón
             StartCoroutine(ActivateCurrentPhaseButton());
         }
         else if (currentPhase == 2)
         {
-            // Fase 3: apagar cámaras anteriores, encender todas
             SetCamerasActive(true);
 
-            // Activar el último botón
             StartCoroutine(ActivateCurrentPhaseButton());
         }
         else if (currentPhase >= 3)
@@ -181,7 +169,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
 
     // ── Activar botón de fase ──────────────────────────────
 
-    // Llamado desde el BattleRoutine cada X segundos
     private IEnumerator ActivateCurrentPhaseButton()
     {
         float[] buttonTimes = { 6f, 7f, 7f };
@@ -195,7 +182,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
         {
             bossButtons[phaseIndex].Activate();
 
-            // Esperar a que se cierre la ventana del botón + un poco más
             yield return new WaitForSeconds(bossButtons[phaseIndex].GetActiveWindow() + 3f);
         }
     }
@@ -213,7 +199,7 @@ public class TheCompiler : MonoBehaviour, IDamageable
         isDead = true;
         StopAllCoroutines();
 
-        BossHealthBar.Instance?.Hide(); // ← agregar
+        BossHealthBar.Instance?.Hide();
 
         SetCamerasActive(false);
 
@@ -225,7 +211,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
 
     private IEnumerator DeathRoutine()
     {
-        // Parpadeo de muerte
         for (int i = 0; i < 6; i++)
         {
             sr.color = Color.red;
@@ -234,7 +219,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
             yield return new WaitForSeconds(0.1f);
         }
 
-        // Fade out
         float elapsed = 0f;
         while (elapsed < 0.5f)
         {
@@ -288,7 +272,6 @@ public class TheCompiler : MonoBehaviour, IDamageable
         if (entranceBarrier != null)
             entranceBarrier.SetActive(false);
 
-        // Reactivar el trigger para que pueda detectar al jugador de nuevo
         if (bossRoomTrigger != null)
             bossRoomTrigger.Reset();
     }
