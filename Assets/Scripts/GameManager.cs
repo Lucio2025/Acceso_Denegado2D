@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private IntegrityBar integrityBar;
     [SerializeField] private HUDManager hudManager;
+    [SerializeField] private VictoryPanel victoryPanel;
+
 
     private void Awake()
     {
@@ -40,12 +42,10 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(
             CameraController.Instance.GetFadeController().FadeOut());
 
-        // Resetear el jefe si existe
         TheCompiler compiler = FindFirstObjectByType<TheCompiler>();
         if (compiler != null)
             compiler.ResetBoss();
 
-        // Teleport al último checkpoint
         player.transform.position = lastCheckpointPosition;
         CameraController.Instance.transform.position = new Vector3(
             lastCameraPosition.x, lastCameraPosition.y,
@@ -96,10 +96,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerWon()
     {
-        // Mostrar pantalla de victoria
         Time.timeScale = 0f;
-        // Si tenés un panel de victoria:
-        // victoryPanel?.SetActive(true);
-        Debug.Log("¡Victoria!");
+        victoryPanel?.Show();
     }
 }
