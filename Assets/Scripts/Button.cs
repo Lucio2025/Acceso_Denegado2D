@@ -32,7 +32,7 @@ public class Button : MonoBehaviour, IInteractable
         spriteRenderer.sprite = pressedSprite;
         CameraShake.Instance?.ShakeOnButton();
         OnPressed?.Invoke();
-        Debug.Log($"{gameObject.name} activado!");
+        Debug.Log($"{gameObject.name}");
     }
 
     public bool IsPressed() => isPressed;
